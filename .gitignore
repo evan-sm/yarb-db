@@ -1,0 +1,5 @@
+.env
+1/
+.git
+mongo-data/
+go.sum
