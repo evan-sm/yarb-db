@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	yarb "github.com/wmw9/yarb-struct"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -21,7 +22,7 @@ func main() {
 
 }
 
-func mongoUpdateIGPost(name string, ts int) User {
+func mongoUpdateIGPost(name string, ts int) yarb.User {
 	collection := client.Database("yarb").Collection("users")
 
 	// Update a document
@@ -36,7 +37,7 @@ func mongoUpdateIGPost(name string, ts int) User {
 	fmt.Printf("Matched %v documents and updated %v documents.\n", updateResult.MatchedCount, updateResult.ModifiedCount)
 
 	//Find a single document
-	var result User
+	var result yarb.User
 
 	err = collection.FindOne(context.TODO(), filter).Decode(&result)
 	if err != nil {
@@ -47,7 +48,7 @@ func mongoUpdateIGPost(name string, ts int) User {
 	return result
 }
 
-func mongoUpdateIGStories(name string, ts int) User {
+func mongoUpdateIGStories(name string, ts int) yarb.User {
 	collection := client.Database("yarb").Collection("users")
 
 	// Update a document
@@ -62,7 +63,7 @@ func mongoUpdateIGStories(name string, ts int) User {
 	fmt.Printf("Matched %v documents and updated %v documents.\n", updateResult.MatchedCount, updateResult.ModifiedCount)
 
 	//Find a single document
-	var result User
+	var result yarb.User
 
 	err = collection.FindOne(context.TODO(), filter).Decode(&result)
 	if err != nil {
@@ -73,7 +74,7 @@ func mongoUpdateIGStories(name string, ts int) User {
 	return result
 }
 
-func mongoUpdateIGStoriesByID(id int, ts int) User {
+func mongoUpdateIGStoriesByID(id int, ts int) yarb.User {
 	collection := client.Database("yarb").Collection("users")
 
 	// Update a document
@@ -88,7 +89,7 @@ func mongoUpdateIGStoriesByID(id int, ts int) User {
 	fmt.Printf("Matched %v documents and updated %v documents.\n", updateResult.MatchedCount, updateResult.ModifiedCount)
 
 	//Find a single document
-	var result User
+	var result yarb.User
 
 	err = collection.FindOne(context.TODO(), filter).Decode(&result)
 	if err != nil {
@@ -99,7 +100,7 @@ func mongoUpdateIGStoriesByID(id int, ts int) User {
 	return result
 }
 
-func Find() []*User {
+func Find() []*yarb.User {
 	// Get a handle for your collection
 	collection := client.Database("yarb").Collection("users")
 
@@ -107,18 +108,18 @@ func Find() []*User {
 	findOptions := options.Find()
 	findOptions.SetLimit(0)
 
-	var results []*User
+	var results []*yarb.User
 
 	// Finding multiple documents returns a cursor
 	cur, err := collection.Find(context.TODO(), filter, findOptions)
 	if err != nil {
-		return []*User{}
+		return []*yarb.User{}
 		//log.Fatal(err)
 	}
 
 	// Iterate through the cursor
 	for cur.Next(context.TODO()) {
-		var elem User
+		var elem yarb.User
 		err := cur.Decode(&elem)
 		if err != nil {
 			log.Fatal(err)
@@ -140,7 +141,7 @@ func Find() []*User {
 	return results
 }
 
-func FindUser(name string) *User {
+func FindUser(name string) *yarb.User {
 	// Get a handle for your collection
 	collection := client.Database("yarb").Collection("users")
 
@@ -148,19 +149,19 @@ func FindUser(name string) *User {
 	//	findOptions.SetLimit(1)
 	filter := bson.D{{"name", name}}
 
-	var result *User
+	var result *yarb.User
 
 	// Finding multiple documents returns a cursor
 	err := collection.FindOne(context.TODO(), filter).Decode(&result)
 	if err != nil {
-		return &User{}
+		return &yarb.User{}
 		log.Fatal(err)
 	}
 
 	return result
 }
 
-func mongoGetUserByIstagramID(id int) *User {
+func mongoGetUserByIstagramID(id int) *yarb.User {
 	// Get a handle for your collection
 	collection := client.Database("yarb").Collection("users")
 
@@ -168,12 +169,12 @@ func mongoGetUserByIstagramID(id int) *User {
 	//	findOptions.SetLimit(1)
 	filter := bson.D{{"social.instagram_id", id}}
 
-	var result *User
+	var result *yarb.User
 
 	// Finding multiple documents returns a cursor
 	err := collection.FindOne(context.TODO(), filter).Decode(&result)
 	if err != nil {
-		return &User{}
+		return &yarb.User{}
 		log.Fatal(err)
 	}
 
@@ -188,7 +189,7 @@ func mongoGetIGPostTs(name string) int {
 	//	findOptions.SetLimit(1)
 	filter := bson.D{{"name", name}}
 
-	var result *User
+	var result *yarb.User
 
 	// Finding multiple documents returns a cursor
 	err := collection.FindOne(context.TODO(), filter).Decode(&result)
@@ -208,7 +209,7 @@ func mongoGetIGStoriesTs(name string) int {
 	//	findOptions.SetLimit(1)
 	filter := bson.D{{"name", name}}
 
-	var result *User
+	var result *yarb.User
 
 	// Finding multiple documents returns a cursor
 	err := collection.FindOne(context.TODO(), filter).Decode(&result)
@@ -228,7 +229,7 @@ func mongoGetIGStoriesTsByID(id int) int {
 	//	findOptions.SetLimit(1)
 	filter := bson.D{{"social.instagram_id", id}}
 
-	var result *User
+	var result *yarb.User
 
 	// Finding multiple documents returns a cursor
 	err := collection.FindOne(context.TODO(), filter).Decode(&result)
